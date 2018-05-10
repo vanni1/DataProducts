@@ -1,21 +1,40 @@
 ---
-title: "Week 2"
+title: "week 2 assignment"
 author: "Vanni de Clippele"
 date: "10 mei 2018"
-output: ioslides_presentation
+output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown Slide using leaflet
+## R Markdown with leaflet map
 
-```{r myslide, warning=FALSE}
+This is a map of our planned trip to Iceland.
 
+```{r cars}
 library(leaflet)
 
-my_map <- leaflet() %>% addTiles()
-my_map <- my_map %>% addMarkers(lat=50.7907139,lng = 4.4021212,popup = "Vanni's swimming!")
-my_map
+df <- data.frame(
+      lat = c(64.141332,63.979293,63.545547,64.399117,64.698685,65.670941,65.017199),
+      lng = c(-21.906303,-20.627046,-19.644504,-15.39239,-14.256006,-18.094858,-21.648355),  
+      labels = c("Skipholt 15, Reykjavík(105)", "Hraunvellir(801)","Lambafell, Eyvindarholar(861)",
+                 "Rauðaberg 2, Raudaberg(781)", "Berunes(765)", "Sunnutröð 2, Akureyri(600)", 
+                 "Dalasýsla, Sauðafell(371)"),
+      dates = c("18/6","19/6","20/6","21/6","22/6","23-24/6","25/6"),
+      color = c("green","green","green", "brown", "blue", "green", "brown")
+      )
+
+icons <- awesomeIcons(
+  icon = 'ios-close',
+  iconColor = 'black',
+  library = 'ion',
+  markerColor = df$color
+)
+
+leaflet(df) %>% 
+    addTiles %>%            
+    addAwesomeMarkers(~lng, ~lat, icon=icons, popup = ~labels, label=~dates) %>%
+    addLegend(colors = c("green","brown","blue"),labels = c("K+PB","K+SB","PB"))
 ```
